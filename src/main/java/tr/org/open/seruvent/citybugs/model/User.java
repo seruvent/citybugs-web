@@ -1,32 +1,59 @@
 package tr.org.open.seruvent.citybugs.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="user")
 public class User {
 
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(length=255, nullable=false, unique=true)
     private String username;
+
+    @Column(length=255, nullable=false, unique=false)
     private String password;
+
+    @Column(length=255, nullable=false, unique=true)
     private String email;
+
+    @Column(length=255)
     private String name;
+
+    @Column(length=255)
     private String surname;
+
+    @Column(length=255)
     private String phone;
+
+    @CreationTimestamp
+    @Column(nullable=false)
     private java.sql.Timestamp registerDate;
+
+    @UpdateTimestamp
     private java.sql.Timestamp updateDate;
+
     private java.sql.Timestamp deleteDate;
 
+    @ManyToOne
+    @JoinColumn(name = "user_role_id", nullable = false)
+    private UserRole role;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Event> events;
 
     public long getId() {
-    return id;
+        return id;
     }
 
-    public void setId(long id) {
-    this.id = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
 
@@ -110,4 +137,19 @@ public class User {
     this.deleteDate = deleteDate;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
 }

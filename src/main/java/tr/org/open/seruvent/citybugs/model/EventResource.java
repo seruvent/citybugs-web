@@ -1,6 +1,14 @@
 package tr.org.open.seruvent.citybugs.model;
 
+
+import javax.persistence.*;
+
+
 public class EventResource {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
   private long eventId;
   private String url;

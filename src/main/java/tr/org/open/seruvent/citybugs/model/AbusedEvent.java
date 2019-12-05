@@ -1,8 +1,14 @@
 package tr.org.open.seruvent.citybugs.model;
 
+import javax.persistence.*;
+
+
 public class AbusedEvent {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
+
   private long eventId;
   private long userId;
   private String description;

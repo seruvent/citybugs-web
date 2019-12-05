@@ -1,7 +1,12 @@
 package tr.org.open.seruvent.citybugs.model;
 
+import javax.persistence.*;
+
+
 public class VoteState {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String name;
   private String description;

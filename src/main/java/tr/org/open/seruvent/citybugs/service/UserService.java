@@ -2,21 +2,27 @@ package tr.org.open.seruvent.citybugs.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tr.org.open.seruvent.citybugs.model.User;
 import tr.org.open.seruvent.citybugs.repository.UserRepository;
+import tr.org.open.seruvent.citybugs.repository.UserRoleRepository;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -34,6 +40,7 @@ public class UserService {
 
     public void addUser(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(userRoleRepository.findById(1).get());
         userRepository.save(user);
     }
 
@@ -46,6 +53,22 @@ public class UserService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        UserBuilder builder = null;
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }else{
+            builder = org.springframework.security.core.userdetails.User.withUsername(username);
+            builder.password(user.getPassword());
+            builder.roles(user.getRole().getName());
+        }
+
+        return builder.build();
+    }
 }
 
 

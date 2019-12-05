@@ -7,7 +7,21 @@ import tr.org.open.seruvent.citybugs.service.UserService;
 
 import java.util.List;
 
+/**
+ *
+ *  @Controller
+ *  @ResponseBody
+ *      yerine sadece
+ *  @RestController
+ *      kullanılmıştır
+ *
+ *  https://stackoverflow.com/questions/25242321/difference-between-spring-controller-and-restcontroller-annotation
+ */
+
+
+
 @RestController
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -22,27 +36,27 @@ public class UserController {
      *  -5- @RequestBody ile JSON objesi post edilmesi durumunda addUser methodunda oldugu gibi otomatik objeleştirir
      */
 
-    @RequestMapping("users")
+    @RequestMapping("/users")
     public List<User> getAllUser(){
         return userService.getUserList();
     }
 
-    @RequestMapping("users/{id}")
+    @RequestMapping("/users/{id}")
     public User getUser(@PathVariable int id){
         return userService.getUserById(id);
     }
 
-    @RequestMapping(method=RequestMethod.POST , value="users")
+    @RequestMapping(method=RequestMethod.POST , value="/users")
     public void addUser(@RequestBody User user){
         userService.addUser(user);
     }
 
-    @RequestMapping(method=RequestMethod.PUT , value="users/{id}")
+    @RequestMapping(method=RequestMethod.PUT , value="/users/{id}")
     public void updateUser(@RequestBody User user, @PathVariable int id){
         userService.updateUser(id,user);
     }
 
-    @RequestMapping(method=RequestMethod.DELETE , value="users/{id}" )
+    @RequestMapping(method=RequestMethod.DELETE , value="/users/{id}" )
     public void removeUser(@PathVariable int id){
         userService.removeUser(id);
     }
