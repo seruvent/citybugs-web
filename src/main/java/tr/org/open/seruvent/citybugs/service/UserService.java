@@ -44,6 +44,12 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public void addUser(User user , int roleId){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(userRoleRepository.findById(roleId).get());
+        userRepository.save(user);
+    }
+
     public void updateUser(int id, User user){
         userRepository.save(user);
     }
@@ -53,13 +59,21 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public User getUserByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
+    public User getUserByEmail(String userEmail){
+        return userRepository.findByEmail(userEmail);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         UserBuilder builder = null;
         User user = userRepository.findByUsername(username);
 
-        if (user == null) {
+        if (user==null) {
             throw new UsernameNotFoundException(username);
         }else{
             builder = org.springframework.security.core.userdetails.User.withUsername(username);
@@ -69,6 +83,8 @@ public class UserService implements UserDetailsService {
 
         return builder.build();
     }
+
+
 }
 
 

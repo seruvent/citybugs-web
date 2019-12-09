@@ -2,6 +2,7 @@ package tr.org.open.seruvent.citybugs.model;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import tr.org.open.seruvent.citybugs.util.SeruventUtils;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -32,6 +33,12 @@ public class User {
     @Column(length=255)
     private String phone;
 
+    @Column(length=255)
+    private String facebook_id;
+
+    @Column(length=1000)
+    private String facebook_access_token;
+
     @CreationTimestamp
     @Column(nullable=false)
     private java.sql.Timestamp registerDate;
@@ -47,6 +54,17 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Event> events;
+
+    public User(){
+
+    }
+
+    public User(String username, String email, String name, String surname){
+        this.username = username;
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+    }
 
     public long getId() {
         return id;
@@ -74,6 +92,9 @@ public class User {
     this.password = password;
     }
 
+    public void setRandomPassword(){
+        this.password = SeruventUtils.generateRandomString();
+    }
 
     public String getEmail() {
     return email;
@@ -151,5 +172,21 @@ public class User {
 
     public void setEvents(Set<Event> events) {
         this.events = events;
+    }
+
+    public String getFacebook_id() {
+        return facebook_id;
+    }
+
+    public void setFacebook_id(String facebook_id) {
+        this.facebook_id = facebook_id;
+    }
+
+    public String getFacebook_access_token() {
+        return facebook_access_token;
+    }
+
+    public void setFacebook_access_token(String facebook_access_token) {
+        this.facebook_access_token = facebook_access_token;
     }
 }

@@ -20,6 +20,20 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.session:spring-session-core'
     runtimeOnly 'mysql:mysql-connector-java'
+    
+
+    compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.11.RELEASE'
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+    // webjars
+    compile group: 'org.webjars', name: 'bootstrap', version: '4.3.0'
+    
+    // production ortamında org.springframework.boot kaldırılmalıdır
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.2.0.RELEASE'
+
+    // facebook client
+    compile group: 'com.restfb', name: 'restfb', version: '3.0.0'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

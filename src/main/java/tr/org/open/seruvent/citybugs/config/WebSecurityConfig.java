@@ -4,29 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import tr.org.open.seruvent.citybugs.filter.JwtRequestFilter;
 import tr.org.open.seruvent.citybugs.service.UserService;
-
-import javax.sql.DataSource;
 
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     @Bean
-    public PasswordEncoder passwoedEncoder(){
-        return new BCryptPasswordEncoder();
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
-
-    @Autowired
-    private DataSource dataSource;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -34,19 +31,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
+
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception{
 
-        httpSecurity.csrf().disable()
+        /**
+         * httpBasic -> basic authentication ile postman üzerinden request atılmasını sağlar
+         */
+
+        httpSecurity
+                .sessionManagement()
+                    .and()
                 .authorizeRequests()
                     .antMatchers("/admin/*").hasRole("ADMIN")
-                    .antMatchers(HttpMethod.POST, "/api/**").permitAll()
-                    .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
-                    .antMatchers(HttpMethod.DELETE, "/api/**").permitAll()
+                    .antMatchers("/api/login").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/**").hasRole("USER")
+                    .antMatchers(HttpMethod.PUT, "/api/**").hasRole("USER")
+                    .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("USER")
                     .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                     .antMatchers(HttpMethod.GET , "/").permitAll()
                     .and()
-                .formLogin();
+                .formLogin()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/perform_login")
+                    .and()
+                .httpBasic()
+                    .and()
+                .csrf().disable();
+
+
+        // Add a filter to validate the tokens with every request
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 
@@ -61,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          */
 
         /**
-            auth.inMemoryAuthentication()
+            util.inMemoryAuthentication()
                 .withUser("seruvent").password(passwordEncoder.encode("seruvent")).roles("ADMIN")
                 .and()
                 .withUser("guppy").password(passwordEncoder.encode("guppy")).roles("USER");
@@ -74,7 +91,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * UserDetailsService implement edildikten sonra loadUserByUsername methodunda kullanıcı
          * adı, password ve role tanımlanım
          */
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+        auth.parentAuthenticationManager(authenticationManagerBean())
+                .userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
 }

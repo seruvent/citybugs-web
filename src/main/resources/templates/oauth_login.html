@@ -1,0 +1,16 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.0/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+
+<h3>Login with:</h3>
+<p th:each="url : ${urls}">
+    <a th:text="${url.key}" th:href="${url.value}">Client</a>
+</p>
+</body>
+</html>
