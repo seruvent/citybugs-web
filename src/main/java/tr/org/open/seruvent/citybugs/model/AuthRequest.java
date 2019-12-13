@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class AuthRequest implements Serializable {
 
-    private int appId;
+    private String appId;
     private String accessToken;
     private String appUserId;
 
@@ -17,11 +17,11 @@ public class AuthRequest implements Serializable {
 
     }
 
-    public int getAppId() {
+    public String getAppId() {
         return appId;
     }
 
-    public void setAppId(int appId) {
+    public void setAppId(String appId) {
         this.appId = appId;
     }
 

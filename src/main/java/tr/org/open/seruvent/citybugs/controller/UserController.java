@@ -97,12 +97,4 @@ public class UserController {
         }
     }
 
-
-
-
-    @RequestMapping(method=RequestMethod.PUT, value="/test" )
-    public List<User> test(){
-        return userService.getUserList();
-    }
-
 }

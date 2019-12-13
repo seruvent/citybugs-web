@@ -1,12 +1,10 @@
 package tr.org.open.seruvent.citybugs.model;
 
-import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -38,6 +36,9 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "event")
+    private Set<EventResource> eventResources;
 
     private long state;
 
@@ -121,5 +122,11 @@ public class Event {
       this.user = user;
     }
 
+    public Set<EventResource> getEventResources() {
+        return eventResources;
+    }
 
+    public void setEventResources(Set<EventResource> eventResources) {
+        this.eventResources = eventResources;
+    }
 }

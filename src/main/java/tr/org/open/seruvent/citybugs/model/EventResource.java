@@ -1,30 +1,51 @@
 package tr.org.open.seruvent.citybugs.model;
 
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 
-
+@Entity
+@Table(name="event_resources")
 public class EventResource {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  private long eventId;
+  @ManyToOne
+  @JoinColumn(name = "event_id", nullable = false)
+  private Event event;
+
+  @Column(length=1000)
   private String url;
+
+  @CreationTimestamp
+  @Column(nullable=false)
   private java.sql.Timestamp registerDate;
+
+  @UpdateTimestamp
   private java.sql.Timestamp updateDate;
+
   private java.sql.Timestamp deleteDate;
 
 
-  public long getEventId() {
-    return eventId;
+  public long getId() {
+    return id;
   }
 
-  public void setEventId(long eventId) {
-    this.eventId = eventId;
+  public void setId(long id) {
+    this.id = id;
   }
 
+  public Event getEvent() {
+    return event;
+  }
+
+  public void setEvent(Event event) {
+    this.event = event;
+  }
 
   public String getUrl() {
     return url;
@@ -60,5 +81,7 @@ public class EventResource {
   public void setDeleteDate(java.sql.Timestamp deleteDate) {
     this.deleteDate = deleteDate;
   }
+
+
 
 }

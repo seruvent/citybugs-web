@@ -1,5 +1,9 @@
 
 
+DELETE FROM event;
+DELETE FROM user;
+DELETE FROM user_role;
+
 INSERT INTO user_role (id, name) VALUES ('1', 'ADMIN');
 INSERT INTO user_role (id, name) VALUES ('2', 'USER');
 
