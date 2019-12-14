@@ -1,5 +1,8 @@
 package tr.org.open.seruvent.citybugs.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -35,10 +38,13 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy="event")
+    @JsonManagedReference
     private Set<EventResource> eventResources;
+
 
     private long state;
 
@@ -129,4 +135,5 @@ public class Event {
     public void setEventResources(Set<EventResource> eventResources) {
         this.eventResources = eventResources;
     }
+
 }

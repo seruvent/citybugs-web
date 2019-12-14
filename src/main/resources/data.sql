@@ -1,5 +1,6 @@
 
 
+DELETE FROM event_resources;
 DELETE FROM event;
 DELETE FROM user;
 DELETE FROM user_role;

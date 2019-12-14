@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import tr.org.open.seruvent.citybugs.model.Event;
 import tr.org.open.seruvent.citybugs.repository.EventRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class EventService {
 
@@ -15,10 +18,14 @@ public class EventService {
     private UserService userService;
 
     public Event createEvent(Event event){
-
         event.setState(1);
         event.setUser(userService.getUserById(1));
         return eventRepository.save(event);
     }
 
+    public List<Event> getEventList(){
+        List<Event> eventList = new ArrayList<>();
+        eventRepository.findAll().forEach(eventList::add);
+        return eventList;
+    }
 }

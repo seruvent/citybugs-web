@@ -1,5 +1,8 @@
 package tr.org.open.seruvent.citybugs.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import tr.org.open.seruvent.citybugs.util.SeruventUtils;
@@ -53,6 +56,7 @@ public class User {
     private UserRole role;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Set<Event> events;
 
     public User(){

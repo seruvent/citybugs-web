@@ -1,16 +1,19 @@
 package tr.org.open.seruvent.citybugs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import tr.org.open.seruvent.citybugs.model.Event;
 import tr.org.open.seruvent.citybugs.model.EventResource;
+import tr.org.open.seruvent.citybugs.model.Result;
 import tr.org.open.seruvent.citybugs.service.EventResourceService;
 import tr.org.open.seruvent.citybugs.service.EventService;
 
 import java.util.Iterator;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -23,7 +26,7 @@ public class EventController {
     private EventResourceService eventResourceService;
 
     @RequestMapping(method = RequestMethod.POST ,value = "/event")
-    public void createEvent(@RequestBody Event event){
+    public ResponseEntity createEvent(@RequestBody Event event){
 
         event=eventService.createEvent(event);
 
@@ -36,9 +39,14 @@ public class EventController {
 
         System.out.println("----- ----- ----- ----- -----");
         System.out.println("EVENT & EVENT RESOURCES CREATED");
-        System.out.println(event.getDescription());
-        System.out.println(event.getTitle());
-        System.out.println(event.getId());
+        System.out.println("----- ----- ----- ----- -----");
+
+        return ResponseEntity.ok(Result.SUCCESS.setContent("EVENT & EVENT RESOURCES CREATED"));
+    }
+
+    @RequestMapping(method = RequestMethod.GET ,value = "/events")
+    public List<Event> getEventList(){
+        return eventService.getEventList();
     }
 
 

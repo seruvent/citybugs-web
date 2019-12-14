@@ -82,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             util.inMemoryAuthentication()
                 .withUser("seruvent").password(passwordEncoder.encode("seruvent")).roles("ADMIN")
                 .and()
-                .withUser("guppy").password(passwordEncoder.encode("guppy")).roles("USER");
+                .withUser("seruvent").password(passwordEncoder.encode("seruvent")).roles("USER");
         */
 
 
