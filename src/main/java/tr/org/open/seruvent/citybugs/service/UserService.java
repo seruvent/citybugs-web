@@ -38,6 +38,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(i).get();
     }
 
+    public User getUserByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
+    public User getUserByEmail(String userEmail){
+        return userRepository.findByEmail(userEmail);
+    }
+
     public void addUser(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(userRoleRepository.findById(1).get());
@@ -56,15 +64,6 @@ public class UserService implements UserDetailsService {
 
     public void removeUser(int id){
         userRepository.deleteById(id);
-    }
-
-
-    public User getUserByUsername(String username){
-        return userRepository.findByUsername(username);
-    }
-
-    public User getUserByEmail(String userEmail){
-        return userRepository.findByEmail(userEmail);
     }
 
     @Override

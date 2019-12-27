@@ -41,13 +41,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             // -2.1- Remove "Bearer"
             jwtToken = requestTokenHeader.substring(7);
+            System.out.println(jwtToken);
 
             // -2.2- Try to get data from jwt token
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 
                 // -2.2.1- If username exist then fetch and validate user
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                // if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (username != null) {
                     UserDetails userDetails = userService.loadUserByUsername(username);
 
                     if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
@@ -72,7 +74,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 System.out.println("JWT Token has expired");
             } catch (Exception e){
                 System.out.println("SERUVENT_ERROR");
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
 

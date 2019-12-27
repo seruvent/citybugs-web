@@ -46,7 +46,7 @@ public class Event {
     private Set<EventResource> eventResources;
 
 
-    private long state;
+    private long state=1;
 
 
     public long getId() {

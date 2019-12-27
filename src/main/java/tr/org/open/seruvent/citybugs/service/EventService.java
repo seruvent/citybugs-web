@@ -18,8 +18,6 @@ public class EventService {
     private UserService userService;
 
     public Event createEvent(Event event){
-        event.setState(1);
-        event.setUser(userService.getUserById(1));
         return eventRepository.save(event);
     }
 

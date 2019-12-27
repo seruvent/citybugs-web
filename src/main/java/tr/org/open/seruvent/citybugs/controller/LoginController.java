@@ -62,6 +62,7 @@ public class LoginController {
 
         // -4- Kullanıcı username değeri ile JWT döndürülür
         String token = jwtTokenUtil.generateToken(user.getUsername());
+        System.out.println("SERUVENT - Generated token " + token);
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
