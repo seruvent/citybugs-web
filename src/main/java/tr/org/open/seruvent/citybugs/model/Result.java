@@ -1,7 +1,6 @@
 package tr.org.open.seruvent.citybugs.model;
 
 import com.google.gson.annotations.Expose;
-import com.oracle.javafx.jmx.json.JSONException;
 import net.minidev.json.JSONObject;
 
 
@@ -59,7 +58,7 @@ public class Result<T> implements Serializable {
         try {
             this.resultText = jsonObject.getAsString("resultText");
             this.resultCode = jsonObject.getAsString("resultCode");
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
